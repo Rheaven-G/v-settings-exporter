@@ -1,32 +1,34 @@
 // Main file of vSettingsExporter
-const PNAME:&str = "vSetEx"; // Program name printed in terminal
+// LIBRARIES
+
+// MODULES
+mod main_events;
+mod file_manager;
+mod behaviour_tweaker;
+
+// CONSTANTS
+pub(crate) const PNAME:&str = "vSetEx"; // Program name printed in terminal
 
 fn main() {
-    // We do everything we need to before starting the program
-    println!("{PNAME}] Starting !");
+    // run once
+    main_events::start();
 
-    // We then start the program and its event loop
+    // loop main events AKA: active program
     main_event_loop();
 
+    // closing safely for smooth user experience
     safely_closing();
 }
 
-fn main_event_loop() {
-    let mut running:bool = true;
 
-    let mut count:u32 = 5;
+fn main_event_loop() { // Sync with user inputs
+
+    let mut running:bool = true;
 
     // Main even loop
     while running {
-        println!("{PNAME}] {count}...");
-
-
-        if count > 0 {
-            count = count - 1;
-        }
-        else {
-            running = false;
-        }
+        main_events::update();
+        main_events::late_update();
     }
 }
 
