@@ -1,7 +1,8 @@
 # Main Python for vSettingsExporter
 
 import cmdinterpreter
-from utils import log, debug_log_colours, MsgType
+from utils import debug_log_colours
+from logger import *
 
 
 env = { # programme environmental variables
@@ -10,7 +11,8 @@ env = { # programme environmental variables
 }
 
 def main():
-    log("Starting vSettings Exporter...", "", MsgType.TITLE)
+    Title.log(" Starting vSettigns Exporter...")
+    Assert.log("No assertion errors, continuing...")
 
 
 
