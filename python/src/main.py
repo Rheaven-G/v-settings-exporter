@@ -3,6 +3,7 @@
 import cmdinterpreter
 from utils import debug_log_colours
 from logger import *
+from cmdinterpreter import CLI
 
 
 env = { # programme environmental variables
@@ -11,10 +12,14 @@ env = { # programme environmental variables
 }
 
 def main():
-    Title.log(" Starting vSettigns Exporter...")
-    Assert.log("No assertion errors, continuing...")
+    Title.log("Starting vSettigns Exporter...")
 
 
+    Title.log("Starting vSetEx CLI...")
+    cli = CLI()
+    cli.start()
+
+    Title.log("Closed vSetEx properly.")
 
 
 
@@ -24,4 +29,4 @@ def main():
 if __name__ == '__main__':
     main()
     # cmdinterpreter.cmd_loop()
-    debug_log_colours()
+    # debug_log_colours()

@@ -142,7 +142,9 @@ class Log:
 
 
 # Create all log objects
-
+class InfoLog(Log):
+    def title(self, title:str) -> str:
+        return f"{setex}{col(self.main_colour, INVERTED, True)} {self.prefix}]{col(RESET)} {col(self.main_colour, UNDERLINE)}{title}{col(RESET)}"
 class DumpLog(Log):
     def message(self, msg:str) -> str:
         return f" {col(self.main_colour)}{msg}{col(RESET)}"
@@ -187,10 +189,11 @@ class AssertionLog(Log):
         return f"{setex}{col(self.main_colour)} {self.prefix} {col(self.main_colour, UNDERLINE)}{title}{col(RESET)}"
 
 # Instantiate all debugs
-Info = Log("INFO", BLUE)
+Info = InfoLog("INFO", BLUE)
 Dump = DumpLog("DUMP", WHITE)
 Debug = DebugLog("DEBUG", GRAYED)
 Error = ExceptionLog("EXCEPTION", BLOOD)
 Clue = ClueLog("CLUE", PINK)
 Title = TitleLog("TITLE", SKY)
 Assert = AssertionLog("⬤ ⬤ ⬤", LIME)
+Help = InfoLog("HELP", SKY)
