@@ -41,7 +41,7 @@ H_WHITE = 47
 # Light Highlighted
 H_GRAY = 100
 H_RED = 101
-H_LIME = 102
+H_LIME = 1023
 H_YELLOW = 103
 H_INDIGO = 104
 H_PINK = 105
@@ -64,8 +64,30 @@ def col(c:int, s:int=0, contract_correction:bool =False) -> str:
 setex = f"{col(INDIGO, INVERTED)} vSetEx]{col(RESET)}"
 
 
-# Main class, generally good
 class Log:
+    def __init__(self):
+        self.Instance:Log = self
+        self.all_log_events:list[LogEvent] = []
+
+    @staticmethod
+    def info(tit:str, msg:str | list[str] | None) -> None:
+        InfoLog("INFO", BLUE).log(tit, msg)
+
+    @staticmethod
+    def error(tit:str, msg:str | list[str] | None, clue:str | list[str] | None =None) -> None:
+        ExceptionLog("ERROR", BLOOD).log(msg, tit, clue)
+
+    @staticmethod
+    def clue(msg:str | list[str] | None) -> None:
+        ClueLog("CLUE", MAGENTA).log("", msg)
+
+    @staticmethod
+    def warn(tit:str, msg:str | list[str] | None) -> None:
+        ExceptionLog("WARNING", GOLD).log(tit, msg)
+
+
+# Main class, generally good
+class LogEvent:
     def __init__(self, prefix:str, main_colour:int) -> None:
         self.prefix = prefix
         self.main_colour = main_colour
@@ -142,26 +164,27 @@ class Log:
 
 
 # Create all log objects
-class InfoLog(Log):
+class InfoLog(LogEvent):
     def title(self, title:str) -> str:
         return f"{setex}{col(self.main_colour, INVERTED, True)} {self.prefix}]{col(RESET)} {col(self.main_colour, UNDERLINE)}{title}{col(RESET)}"
-class DumpLog(Log):
+
+class DumpLog(LogEvent):
     def message(self, msg:str) -> str:
         return f" {col(self.main_colour)}{msg}{col(RESET)}"
 
-class DebugLog(Log):
+class DebugLog(LogEvent):
     def title(self, title:str) -> str:
         return f"{setex}{col(self.main_colour, INVERTED)} {self.prefix}]{col(WHITE)} {title}{col(RESET)}"
     def message(self, msg:str) -> str:
         return f" {col(self.main_colour)}| {col(WHITE)}{msg}{col(RESET)}"
 
-class ExceptionLog(Log):
+class ExceptionLog(LogEvent):
     def title(self, title:str) -> str:
         return f"{setex}{col(self.main_colour, INVERTED)} {self.prefix} /!\\ {col(RESET)} {col(self.main_colour, UNDERLINE)}{title}{col(RESET)}"
 
     def log(self,
               title:str | None,
-              msg:str | list[str] | None =None,
+              msg:str | list[str] | None ="There is an error and someone forgot to tell you what ?",
               clue_msg:str | list[str] | None =None) -> None:
         if title is None and msg is None:
             self.class_error()
@@ -170,30 +193,31 @@ class ExceptionLog(Log):
         if msg is not None: self.print_messages(msg)
         if clue_msg is not None:
             print(f"{col(self.main_colour)} |")
-            Clue.log("", clue_msg)
+            Log.clue("", clue_msg).log("", clue_msg)
 
-class ClueLog(Log):
+class ClueLog(LogEvent):
     def title(self, title:str) -> str:
         return f" {col(self.main_colour)}|   {col(UNDERLINE, self.main_colour)}{self.prefix}{col(self.main_colour)}:{col(RESET)}"
     def message(self, msg:str | list[str]) -> str:
         return f" {col(self.second_colour)}| {msg}{col(RESET)}"
 
-class TitleLog(Log):
+class TitleLog(LogEvent):
     def title(self, title:str) -> str:
         return f"{setex}{col(self.main_colour)}{title}{col(RESET)}"
     def message(self, msg:str | list[str]) -> str:
         return f"     {col(self.main_colour)}{msg}{col(RESET)}"
 
-class AssertionLog(Log):
+class AssertionLog(LogEvent):
     def title(self, title:str) -> str:
         return f"{setex}{col(self.main_colour)} {self.prefix} {col(self.main_colour, UNDERLINE)}{title}{col(RESET)}"
 
 # Instantiate all debugs
-Info = InfoLog("INFO", BLUE)
-Dump = DumpLog("DUMP", WHITE)
-Debug = DebugLog("DEBUG", GRAYED)
-Error = ExceptionLog("EXCEPTION", BLOOD)
-Clue = ClueLog("CLUE", PINK)
-Title = TitleLog("TITLE", SKY)
-Assert = AssertionLog("⬤ ⬤ ⬤", LIME)
-Help = InfoLog("HELP", SKY)
+# Info = InfoLog("INFO", BLUE)
+# Dump = DumpLog("DUMP", WHITE)
+# Debug = DebugLog("DEBUG", GRAYED)
+# Warn = ExceptionLog( "WARNING", GOLD )
+# Error = ExceptionLog("EXCEPTION", BLOOD)
+# Clue = ClueLog("CLUE", PINK)
+# Title = TitleLog("TITLE", SKY)
+# Assert = AssertionLog("⬤ ⬤ ⬤", LIME)
+# Help = InfoLog("HELP", GREEN)

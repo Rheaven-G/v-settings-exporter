@@ -10,7 +10,6 @@ def test_terminal_colours():
     for i in range(0, 108):
         print(f"{col(i)} COLOUR {i}{col(RESET)}")
 
-
 def debug_log_colours(test_terminal:bool =False):
     Dump.log("Title", ["dump 1", "dump again but longer this time", "waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"])
     Info.log("No config found.", ["Creating new config files", "Config successfully created"])
@@ -24,8 +23,6 @@ def debug_log_colours(test_terminal:bool =False):
 
 
     if test_terminal: test_terminal_colours()
-
-
 
 def read_config(path:str) -> dict:
     try:

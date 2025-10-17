@@ -28,5 +28,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # cmdinterpreter.cmd_loop()
-    # debug_log_colours()
